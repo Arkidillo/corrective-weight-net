@@ -10,16 +10,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageHandler {
-
-    //public static final String TESTING_EXTRA_PATH = "generic-incremental-classifier/";
-    public static final String TESTING_EXTRA_PATH = "";
+    //public static final String RELATIVE_WORKING_DIR = "./";
+    public static final String RELATIVE_WORKING_DIR = "../";
 
     // folder that our images will be stored in
-    public static final String IMAGE_FOLDER = "./" + TESTING_EXTRA_PATH + "initial_train_images/";
-    public static final File CURR_TEST_BATCH_FOLDER = new File("./" + TESTING_EXTRA_PATH + "test_images");
+    public static final String IMAGE_FOLDER = RELATIVE_WORKING_DIR + "./samples/initial_train_images/";
+    public static final File CURR_TEST_BATCH_FOLDER = new File(RELATIVE_WORKING_DIR + "./samples/test_images");
 
-    public static final String POSITIVE_IMAGES_FOLDER = "./" + TESTING_EXTRA_PATH + "positive_images/";
-    public static final String NEGATIVE_IMAGES_FOLDER = "./" + TESTING_EXTRA_PATH + "negative_images/";
+    public static final String POSITIVE_IMAGES_FOLDER = RELATIVE_WORKING_DIR + "./samples/positive_images/";
+    public static final String NEGATIVE_IMAGES_FOLDER = RELATIVE_WORKING_DIR + "./samples/negative_images/";
 
     // macro determining whether the image is a positive or negative example
     public static final byte NEGATIVE_IMAGE = 0;

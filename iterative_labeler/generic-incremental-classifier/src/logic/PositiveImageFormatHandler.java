@@ -10,20 +10,27 @@ import java.util.List;
 import static util.ImageHandler.POSITIVE_IMAGES_FOLDER;
 
 public class PositiveImageFormatHandler {
-    private static StringBuilder fullCsv = new StringBuilder();
-    public static void saveLabels(String pathname, List<Label> labels) {
-        labels.forEach(l -> fullCsv.append(generateCsv(pathname, l)));
+
+    public static void saveLabels(StringBuilder normalCsv, StringBuilder correctedCsv, String pathname, List<Label> labels) {
+        labels.forEach(l -> {
+            // Append to different csv depending on if it was corrected
+            if (l.isModelWrong()) {
+                correctedCsv.append(generateCsv(pathname, l));
+            } else {
+                normalCsv.append(generateCsv(pathname, l));
+            }
+        });
     }
 
-    public static void outputFullCsv() {
-        Utils.saveStrToFile(fullCsv.toString(), POSITIVE_IMAGES_FOLDER + "labeled_data.csv");
+    public static void outputCsv(StringBuilder csv, String csvName) {
+        Utils.saveStrToFile(csv.toString(), POSITIVE_IMAGES_FOLDER + csvName);
     }
 
     public static String generateCsv(String pathname, Label label) {
         byte imageClass = label.isModelWrong() ? ImageHandler.MODEL_WAS_CORRECTED : ImageHandler.MODEL_NOT_WRONG;
         List<String> rowStrs = Arrays.asList(pathname, Integer.toString(label.getX()), Integer.toString(label.getY()),
                 Integer.toString(label.getX() + label.getWidth()), Integer.toString(label.getY() + label.getHeight()),
-                "1", Integer.toString(imageClass));
+                "1");
         return addRowFormatting(rowStrs);
     }
 

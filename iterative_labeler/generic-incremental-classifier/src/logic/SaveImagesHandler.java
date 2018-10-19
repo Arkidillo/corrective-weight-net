@@ -15,12 +15,16 @@ import static util.ImageHandler.NEGATIVE_IMAGES_FOLDER;
 import static util.ImageHandler.POSITIVE_IMAGES_FOLDER;
 
 public class SaveImagesHandler {
+    public static final String NORMAL_CSV_FILENAME = "labeled_data.csv";
+    public static final String CORRECTED_CSV_FILENAME = "corrected_data.csv";
 
     public static void saveAllImages(HashMap<String, ArrayList<Label>> allLabels) {
         // Make sure the folder is cleared
         createFolders();
         //clearFolders();
 
+        StringBuilder fullNormalCsv = new StringBuilder();
+        StringBuilder fullCorrectedCsv = new StringBuilder();
 
         // For each image/ entry in hashmap, save a JSON
         Iterator it = allLabels.entrySet().iterator();
@@ -34,11 +38,13 @@ public class SaveImagesHandler {
             if (labels.size() == 0) {
                 ImageHandler.saveImage(ImageHandler.loadImage(fileName), fileName, ImageHandler.NEGATIVE_IMAGE);
             }
-            PositiveImageFormatHandler.saveLabels(fileName, labels);
+            PositiveImageFormatHandler.saveLabels(fullNormalCsv, fullCorrectedCsv, fileName, labels);
         }
 
+
         // Actually save the fully formatted csv when done
-        PositiveImageFormatHandler.outputFullCsv();
+        PositiveImageFormatHandler.outputCsv(fullNormalCsv, NORMAL_CSV_FILENAME);
+        PositiveImageFormatHandler.outputCsv(fullCorrectedCsv, CORRECTED_CSV_FILENAME);
     }
 
     public static void clearFolders() {

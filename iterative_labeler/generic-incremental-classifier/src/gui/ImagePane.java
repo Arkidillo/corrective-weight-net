@@ -1,6 +1,5 @@
 package gui;
 
-import com.google.gson.Gson;
 import logic.LabelPlaceHandler;
 
 import javax.swing.*;
