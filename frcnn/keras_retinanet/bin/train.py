@@ -428,7 +428,7 @@ def main(args=None):
         print('Loading model, this may take a second...')
         model            = models.load_model(args.snapshot, backbone_name=args.backbone)
         training_model   = model
-        prediction_model = retinanet_bbox(model=model)
+        prediction_model = model
     else:
         weights = args.weights
         # default to imagenet if nothing else is specified

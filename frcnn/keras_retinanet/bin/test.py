@@ -98,11 +98,11 @@ keras.backend.tensorflow_backend.set_session(get_session())
 model_path = os.path.join('snapshots', 'resnet50_csv_01.h5')
 
 # load retinanet model
-model = models.load_model(model_path, backbone_name='resnet50')
+# model = models.load_model(model_path, backbone_name='resnet50')
 
 # if the model is not converted to an inference model, use the line below
 # see: https://github.com/fizyr/keras-retinanet#converting-a-training-model-to-inference-model
-#model = models.load_model(model_path, backbone_name='resnet50', convert=True)
+model = models.load_model(model_path, backbone_name='resnet50', convert=True)
 
 #print(model.summary())
 
