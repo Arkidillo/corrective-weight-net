@@ -7,11 +7,11 @@
 
 
 # show images inline
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-# automatically reload modules when they have changed
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '2')
+# get_ipython().run_line_magic('matplotlib', 'inline')
+#
+# # automatically reload modules when they have changed
+# get_ipython().run_line_magic('load_ext', 'autoreload')
+# get_ipython().run_line_magic('autoreload', '2')
 
 # import keras
 import keras
@@ -27,24 +27,13 @@ import matplotlib.pyplot as plt
 import cv2
 import os
 import numpy as np
+import pandas as pd
 import time
 import datetime
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-k_cam = "https://www.youtube.com/watch?v=8OE1aS91yvQ"
-
-options = Options()
-options.add_argument("--headless")
-driver = webdriver.Firefox(options=options)
-
-driver.get(k_cam)
-time.sleep(2) #time to wait for buffering logo to leave image
-driver.save_screenshot("[placeholder]_cam_{0}_{1}_{2}.png".format(str(datetime.datetime.now().month),
-                                                                    str(datetime.datetime.now().day),
-                                                                    str(datetime.datetime.now().year)))
-driver.close()
 filelist = os.listdir(".")
 for file in filelist:
     if file.endswith(".png"):
@@ -52,7 +41,7 @@ for file in filelist:
         crop_im = im[80:520,50:880] # hard crops for window frame
         cv2.imwrite("../"+file[:-4]+"_cropped.png",crop_im)
         os.remove(file)
-            
+
 # set tf backend to allow memory to grow, instead of claiming everything
 import tensorflow as tf
 
@@ -96,7 +85,9 @@ labels_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'air
 
 
 # load image
-image = read_image_bgr('[placeholder]_cam_10_2_2018_cropped.png')
+image_path = 'pless.jpg'
+out_list = []
+image = read_image_bgr(image_path)
 
 # copy to draw on
 draw = image.copy()
@@ -119,23 +110,19 @@ for box, score, label in zip(boxes[0], scores[0], labels[0]):
     # scores are sorted so we can break
     if score < 0.5:
         break
-        
+
     color = label_color(label)
-    
+
     b = box.astype(int)
     draw_box(draw, b, color=color)
-    
+
     caption = "{} {:.3f}".format(labels_to_names[label], score)
     draw_caption(draw, b, caption)
-    
-plt.figure(figsize=(15, 15))
-plt.axis('off')
-plt.imshow(draw)
-plt.show()
 
+    out_list.append(box.tolist().append(image_path))
+    box_list = box.tolist()
+    box_list.append(image_path)
+    out_list.append(box_list)
 
-# In[ ]:
-
-
-
-
+df = pd.DataFrame(out_list)
+df.to_csv("labels.csv", header=False, index=False)
