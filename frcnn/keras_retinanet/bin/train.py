@@ -26,6 +26,8 @@ import keras
 import keras.preprocessing.image
 import tensorflow as tf
 
+from sklearn.externals import joblib
+
 # Allow relative imports when being executed as script.
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -446,9 +448,11 @@ def main(args=None):
                 freeze_backbone=args.freeze_backbone
             )
         else:
-            model = pickle.load(SAVED_MODELS_PATH + 'model.net')
-            training_model = pickle.load(SAVED_MODELS_PATH + 'training_model.net');
-            prediction_model = pickle.load(SAVED_MODELS_PATH + 'prediction_model.net');
+            model_path = os.path.join('snapshots', 'resnet50_csv_01.h5')
+            model = models.load_model(model_path, backbone_name='resnet50')
+
+            training_model = models.load_model(model_path, backbone_name='resnet50')
+            prediction_model = models.load_model(model_path, backbone_name='resnet50')
 
     # print model summary
     print(model.summary())
@@ -489,12 +493,9 @@ def main(args=None):
             callbacks=callbacks,
         )
 
-    with open(SAVED_MODELS_PATH + 'model.net', 'wb+') as f:
-        pickle.dump(model, f)
-    with open(SAVED_MODELS_PATH + 'training_model.net', 'wb+') as f:
-        pickle.dump(training_model, f)
-    with open(SAVED_MODELS_PATH + 'prediction_model.net', 'wb+') as f:
-        pickle.dump(prediction_model, f)
+    # joblib.dump(model, SAVED_MODELS_PATH + 'model.net')
+    # joblib.dump(training_model, SAVED_MODELS_PATH + 'training_model.net')
+    # joblib.dump(prediction_model, SAVED_MODELS_PATH + 'prediction_model.net')
 
 
 if __name__ == '__main__':
