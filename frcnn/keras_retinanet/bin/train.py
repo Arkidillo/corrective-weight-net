@@ -47,7 +47,6 @@ from ..utils.keras_version import check_keras_version
 from ..utils.model import freeze as freeze_model
 from ..utils.transform import random_transform_generator
 
-
 def makedirs(path):
     # Intended behavior: try to create the directory,
     # pass if the directory exists already, fails otherwise.
@@ -257,6 +256,7 @@ def create_generators(args, preprocess_image):
             **common_args
         )
     elif args.dataset_type == 'csv':
+
         train_generator = CSVGenerator(
             args.annotations,
             args.classes,
@@ -372,6 +372,7 @@ def parse_args(args):
     csv_parser = subparsers.add_parser('csv')
     csv_parser.add_argument('annotations', help='Path to CSV file containing annotations for training.')
     csv_parser.add_argument('classes', help='Path to a CSV file containing class label mapping.')
+    csv_parser.add_argument('--super', help='Indicate whether super train or not')
     csv_parser.add_argument('--val-annotations', help='Path to CSV file containing annotations for validation (optional).')
 
     group = parser.add_mutually_exclusive_group()
@@ -441,6 +442,7 @@ def main(args=None):
             freeze_backbone=args.freeze_backbone
         )
 
+
     # print model summary
     print(model.summary())
 
@@ -460,13 +462,25 @@ def main(args=None):
     )
 
     # start training
-    training_model.fit_generator(
-        generator=train_generator,
-        steps_per_epoch=args.steps,
-        epochs=args.epochs,
-        verbose=1,
-        callbacks=callbacks,
-    )
+    if args.super:
+        print("super")
+        training_model.fit_generator(
+            generator=train_generator,
+            steps_per_epoch=args.steps,
+            epochs=args.epochs,
+            verbose=1,
+            callbacks=callbacks,
+            class_weight={1:2},
+        )
+    else:
+        print("regular")
+        training_model.fit_generator(
+            generator=train_generator,
+            steps_per_epoch=args.steps,
+            epochs=args.epochs,
+            verbose=1,
+            callbacks=callbacks,
+        )
 
 
 if __name__ == '__main__':
