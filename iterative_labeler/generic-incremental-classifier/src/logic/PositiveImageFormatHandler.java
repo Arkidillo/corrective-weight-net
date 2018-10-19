@@ -23,7 +23,7 @@ public class PositiveImageFormatHandler {
     }
 
     public static void outputCsv(StringBuilder csv, String csvName) {
-        Utils.saveStrToFile(csv.toString(), POSITIVE_IMAGES_FOLDER + csvName);
+        Utils.saveStrToFile(csv.toString(), csvName);
     }
 
     public static String generateCsv(String pathname, Label label) {
