@@ -20,6 +20,7 @@ import argparse
 import os
 import sys
 import warnings
+import pickle
 
 import keras
 import keras.preprocessing.image
@@ -46,6 +47,7 @@ from ..utils.anchors import make_shapes_callback
 from ..utils.keras_version import check_keras_version
 from ..utils.model import freeze as freeze_model
 from ..utils.transform import random_transform_generator
+from config import *
 
 def makedirs(path):
     # Intended behavior: try to create the directory,
@@ -373,6 +375,7 @@ def parse_args(args):
     csv_parser.add_argument('annotations', help='Path to CSV file containing annotations for training.')
     csv_parser.add_argument('classes', help='Path to a CSV file containing class label mapping.')
     csv_parser.add_argument('--super', help='Indicate whether super train or not')
+    csv_parser.add_argument('--first', help='Enable if this is the first round of training (load coco model)')
     csv_parser.add_argument('--val-annotations', help='Path to CSV file containing annotations for validation (optional).')
 
     group = parser.add_mutually_exclusive_group()
@@ -434,14 +437,18 @@ def main(args=None):
             weights = backbone.download_imagenet()
 
         print('Creating model, this may take a second...')
-        model, training_model, prediction_model = create_models(
-            backbone_retinanet=backbone.retinanet,
-            num_classes=train_generator.num_classes(),
-            weights=weights,
-            multi_gpu=args.multi_gpu,
-            freeze_backbone=args.freeze_backbone
-        )
-
+        if args.first:
+            model, training_model, prediction_model = create_models(
+                backbone_retinanet=backbone.retinanet,
+                num_classes=train_generator.num_classes(),
+                weights=weights,
+                multi_gpu=args.multi_gpu,
+                freeze_backbone=args.freeze_backbone
+            )
+        else:
+            model = pickle.load(SAVED_MODELS_PATH + 'model.net')
+            training_model = pickle.load(SAVED_MODELS_PATH + 'training_model.net');
+            prediction_model = pickle.load(SAVED_MODELS_PATH + 'prediction_model.net');
 
     # print model summary
     print(model.summary())
@@ -481,6 +488,10 @@ def main(args=None):
             verbose=1,
             callbacks=callbacks,
         )
+
+    pickle.dump(model, SAVED_MODELS_PATH + 'model.net')
+    pickle.dump(training_model, SAVED_MODELS_PATH + 'training_model.net')
+    pickle.dump(prediction_model, SAVED_MODELS_PATH + 'prediction_model.net')
 
 
 if __name__ == '__main__':
