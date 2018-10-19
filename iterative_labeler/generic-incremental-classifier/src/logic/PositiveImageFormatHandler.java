@@ -1,13 +1,9 @@
 package logic;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import gui.Label;
-import model.Output;
 import util.ImageHandler;
 import util.Utils;
 
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,20 +19,11 @@ public class PositiveImageFormatHandler {
         Utils.saveStrToFile(fullCsv.toString(), POSITIVE_IMAGES_FOLDER + "labeled_data.csv");
     }
 
-    public static String generateJson(BufferedImage image, String fileType, String pathname, List<Label> labels) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setVersion(2.0);
-
-        Gson gson = builder.create();
-        Output output = new Output(image, fileType, pathname, labels);
-        return gson.toJson(output);
-    }
-
     public static String generateCsv(String pathname, Label label) {
-        byte imageClass = label.isPlacedByModel() ? ImageHandler.MODEL_CORRECT_LABEL : ImageHandler.NO_MODEL_LABEL;
+        byte imageClass = label.isModelWrong() ? ImageHandler.MODEL_WAS_CORRECTED : ImageHandler.MODEL_NOT_WRONG;
         List<String> rowStrs = Arrays.asList(pathname, Integer.toString(label.getX()), Integer.toString(label.getY()),
                 Integer.toString(label.getX() + label.getWidth()), Integer.toString(label.getY() + label.getHeight()),
-                Integer.toString(imageClass));
+                "1", Integer.toString(imageClass));
         return addRowFormatting(rowStrs);
     }
 

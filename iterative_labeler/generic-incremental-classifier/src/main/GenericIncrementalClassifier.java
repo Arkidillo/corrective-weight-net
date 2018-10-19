@@ -10,6 +10,8 @@ public class GenericIncrementalClassifier {
     public static int WINDOW_WIDTH = 1280;
     public static int WINDOW_HEIGHT = 720;
 
+    public static boolean correctionMode = false;
+
     public static void main (String[] args) {
         // Start window
         GUIHandler gui = new GUIHandler(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -24,8 +26,8 @@ public class GenericIncrementalClassifier {
             // ML training (Done in python)
         }
 
-
         // User correction
+        correctionMode = true;
         UserCorrectionHandler userCorrection = new UserCorrectionHandler(gui);
         userCorrection.correct();
     }

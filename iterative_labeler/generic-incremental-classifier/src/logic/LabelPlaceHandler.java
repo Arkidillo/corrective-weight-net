@@ -88,6 +88,10 @@ public class LabelPlaceHandler implements MouseListener {
                 newLabel.setBottom(adjY);
                 textBox.setText("DONE. Click left to start new");
 
+                if (GenericIncrementalClassifier.correctionMode) {
+                    newLabel.setModelWasWrong(true);
+                }
+
                 // add the new label to the pane to display
                 gui.addLabel(newLabel);
 
