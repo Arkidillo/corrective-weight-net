@@ -3,3 +3,5 @@
 *.jpeg
 *.png
 *.pyc
+iterative_labeler/generic-incremental-classifier/out/
+*.csv
