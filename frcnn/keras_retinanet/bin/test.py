@@ -31,7 +31,7 @@ import pandas as pd
 import time
 import datetime
 
-import config
+from config import *
 
 # set tf backend to allow memory to grow, instead of claiming everything
 import tensorflow as tf
@@ -95,7 +95,7 @@ keras.backend.tensorflow_backend.set_session(get_session())
 
 # adjust this to point to your downloaded/trained model
 # models can be downloaded here: https://github.com/fizyr/keras-retinanet/releases
-model_path = os.path.join('..', 'snapshots', 'resnet50_coco_best_v2.1.0.h5')
+model_path = os.path.join('frcnn','snapshots', 'resnet50_coco_best_v2.1.0.h5')
 
 # load retinanet model
 model = models.load_model(model_path, backbone_name='resnet50')
@@ -111,7 +111,7 @@ labels_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'air
 
 out_list = []
 for filename in os.listdir(TEST_IMAGE_PATH):
-    label_image(os.path.join(TEST_IMAGE_PATH, filename, out_list))
+    label_image(os.path.join(TEST_IMAGE_PATH, filename), out_list)
 
 df = pd.DataFrame(out_list)
 df.to_csv("labels.csv", header=False, index=False)
