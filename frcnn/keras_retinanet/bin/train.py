@@ -489,9 +489,12 @@ def main(args=None):
             callbacks=callbacks,
         )
 
-    pickle.dump(model, SAVED_MODELS_PATH + 'model.net')
-    pickle.dump(training_model, SAVED_MODELS_PATH + 'training_model.net')
-    pickle.dump(prediction_model, SAVED_MODELS_PATH + 'prediction_model.net')
+    with open(SAVED_MODELS_PATH + 'model.net', 'wb+') as f:
+        pickle.dump(model, f)
+    with open(SAVED_MODELS_PATH + 'training_model.net', 'wb+') as f:
+        pickle.dump(training_model, f)
+    with open(SAVED_MODELS_PATH + 'prediction_model.net', 'wb+') as f:
+        pickle.dump(prediction_model, f)
 
 
 if __name__ == '__main__':
