@@ -4,10 +4,10 @@ import os
 import sys
 import shutil
 
-im_path = "../images"
-sample_path = "../iterative_labeler/samples/"
+im_path = "./images/"
+sample_path = "./iterative_labeler/samples/"
 initial_train_images_path = sample_path + "initial_train_images/"
-test_im_dir = sample_path + "test_im_dir/"
+test_im_dir = sample_path + "test_images/"
 
 if __name__ == "__main__":
 	n_iterations = 3	# Add 1 for initial java training
