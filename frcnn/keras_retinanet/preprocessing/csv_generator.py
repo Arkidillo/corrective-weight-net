@@ -26,6 +26,8 @@ import csv
 import sys
 import os.path
 
+from config import IMAGES_PATH
+
 
 def _parse(value, function, fmt):
     """
@@ -65,6 +67,10 @@ def _read_annotations(csv_reader, classes):
     """
     result = {}
     for line, row in enumerate(csv_reader):
+        if not row:
+        	return result
+
+        row[0] = IMAGES_PATH + row[0]
         line += 1
 
         try:
@@ -120,7 +126,7 @@ class CSVGenerator(Generator):
         self,
         csv_data_file,
         csv_class_file,
-        base_dir=None,
+        base_dir='.',
         **kwargs
     ):
         """ Initialize a CSV data generator.

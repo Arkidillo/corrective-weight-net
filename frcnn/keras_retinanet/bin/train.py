@@ -62,8 +62,10 @@ def makedirs(path):
 def get_session():
     """ Construct a modified tf session.
     """
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
+    # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.33)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+    config = tf.ConfigProto(gpu_options=gpu_options)
+    config.gpu_options.allow_growth = False
     return tf.Session(config=config)
 
 
@@ -452,7 +454,7 @@ def main(args=None):
             prediction_model = models.load_model(model_path, backbone_name='resnet50')
 
     # print model summary
-    print(model.summary())
+    # print(model.summary())
 
     # this lets the generator compute backbone layer shapes using the actual backbone model
     if 'vgg' in args.backbone or 'densenet' in args.backbone:
