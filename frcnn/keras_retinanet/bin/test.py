@@ -23,7 +23,6 @@ from keras_retinanet.utils.visualization import draw_box, draw_caption
 from keras_retinanet.utils.colors import label_color
 
 # import miscellaneous modules
-import matplotlib.pyplot as plt
 import cv2
 import os
 import numpy as np

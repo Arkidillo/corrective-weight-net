@@ -63,9 +63,8 @@ def get_session():
     """ Construct a modified tf session.
     """
     # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.33)
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
-    config = tf.ConfigProto(gpu_options=gpu_options)
-    config.gpu_options.allow_growth = False
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
     return tf.Session(config=config)
 
 
