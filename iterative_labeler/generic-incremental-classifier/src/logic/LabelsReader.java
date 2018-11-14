@@ -56,10 +56,10 @@ public class LabelsReader {
 
             if (filename == null) {
                 System.err.println("No files found in csv");
-                System.exit(1);
+            } else {
+                // For the last image
+                labels.put(filename, thisImageLabels);
             }
-            // For the last image
-            labels.put(filename, thisImageLabels);
         } catch (IOException e) {
             e.printStackTrace();
         }
