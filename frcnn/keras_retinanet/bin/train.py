@@ -480,7 +480,7 @@ def main(args=None):
             epochs=args.epochs,
             verbose=1,
             callbacks=callbacks,
-            class_weight={1:2},
+            class_weight={0:2},
         )
     else:
         print("regular")
