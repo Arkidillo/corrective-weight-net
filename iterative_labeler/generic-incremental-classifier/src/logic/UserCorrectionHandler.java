@@ -43,6 +43,8 @@ public class UserCorrectionHandler {
     public void placeLabelsForImage(HashMap<String, ArrayList<Label>> labelsForFile, String fileName) {
         ArrayList<Label> labels = labelsForFile.get(fileName);
 
+        if (labels == null) return;
+
         for (Label label: labels) {
             guiHandler.addLabel(label);
         }
