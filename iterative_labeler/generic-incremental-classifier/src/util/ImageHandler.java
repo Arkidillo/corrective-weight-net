@@ -20,6 +20,8 @@ public class ImageHandler {
     public static final String POSITIVE_IMAGES_FOLDER = RELATIVE_WORKING_DIR + "./iterative_labeler/samples/positive_images/";
     public static final String NEGATIVE_IMAGES_FOLDER = RELATIVE_WORKING_DIR + "./iterative_labeler/samples/negative_images/";
 
+    public static final String MODEL_GUESSES_CSV = RELATIVE_WORKING_DIR + "./images.csv";
+
     // macro determining whether the image is a positive or negative example
     public static final byte NEGATIVE_IMAGE = 0;
     public static final byte MODEL_NOT_WRONG = 1;

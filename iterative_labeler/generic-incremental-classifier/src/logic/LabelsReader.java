@@ -10,12 +10,14 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static util.ImageHandler.MODEL_GUESSES_CSV;
+
 public class LabelsReader {
     public static HashMap<String, ArrayList<Label>> readLabels() {
         HashMap<String, ArrayList<Label>> labels = new HashMap<>();
 
         try {
-            Reader in = new FileReader("./src/svm_classifier/labels.csv");
+            Reader in = new FileReader(MODEL_GUESSES_CSV);
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
 
             // All the labels for 1 image
