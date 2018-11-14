@@ -76,7 +76,6 @@ def label_image(image_path, out_list):
         draw_caption(draw, b, caption)
 	cv2.imwrite('model_guess.jpg', draw)
 
-        out_list.append(box.tolist().append(image_path))
         box_list = box.tolist()
         box_list.append(image_path)
         out_list.append(box_list)
@@ -126,8 +125,8 @@ for filename in os.listdir(test_images_path):
 	label_image(os.path.join(test_images_path, filename), out_list)
 
 print(out_list)
-
 df = pd.DataFrame(out_list)
+print(df)
 df.to_csv("labels.csv", header=False, index=False)
 # ## Run detection on example
 
