@@ -35,10 +35,6 @@ public class SaveImagesHandler {
             ArrayList<Label> labels = (ArrayList<Label>) (pair.getValue());
             String fileName =         (String)pair.getKey();
 
-            // The image is a negative example if it has no labels
-            if (labels.size() == 0) {
-                ImageHandler.saveImage(ImageHandler.loadImage(fileName), fileName, ImageHandler.NEGATIVE_IMAGE);
-            }
             PositiveImageFormatHandler.saveLabels(fullNormalCsv, fullCorrectedCsv, fileName, labels);
         }
 
