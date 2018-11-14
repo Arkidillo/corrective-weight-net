@@ -62,8 +62,8 @@ def makedirs(path):
 def get_session():
     """ Construct a modified tf session.
     """
-    # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.33)
-    config = tf.ConfigProto()
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.7)
+    config = tf.ConfigProto(gpu_options=gpu_options)
     config.gpu_options.allow_growth = True
     return tf.Session(config=config)
 
@@ -445,13 +445,14 @@ def main(args=None):
                 multi_gpu=args.multi_gpu,
                 freeze_backbone=args.freeze_backbone
             )
+        '''
         else:
             model_path = os.path.join('snapshots', 'resnet50_csv_01.h5')
             model = models.load_model(model_path, backbone_name='resnet50')
 
             training_model = models.load_model(model_path, backbone_name='resnet50')
             prediction_model = models.load_model(model_path, backbone_name='resnet50')
-
+	'''
     # print model summary
     # print(model.summary())
 

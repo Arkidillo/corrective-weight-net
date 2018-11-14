@@ -37,6 +37,8 @@ if __name__ == "__main__":
 
 		target_dir = test_im_dir[:-1]
 
+	print("Images in this batch:")
 	for i in range(i_start, i_end):
+		print(all_im_list[i])
 		new_path = all_im_list[i].replace(im_path[:-1], target_dir)
 		shutil.copyfile(all_im_list[i], new_path)
