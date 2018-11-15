@@ -29,10 +29,10 @@ public class LabelsReader {
 
             for (CSVRecord record : records) {
                 newLabel = new Label();
-                int x = Integer.parseInt(record.get(0));
-                int y = Integer.parseInt(record.get(1));
-                int width = Integer.parseInt(record.get(2));
-                int height = Integer.parseInt(record.get(3));
+                int x = (int)Double.parseDouble(record.get(0));
+                int y = (int)Double.parseDouble(record.get(1));
+                int width = (int)Double.parseDouble(record.get(2));
+                int height = (int)Double.parseDouble(record.get(3));
 
                 filename = record.get(4);
                 // Happens for the first file
