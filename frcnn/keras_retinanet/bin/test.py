@@ -29,6 +29,7 @@ import numpy as np
 import pandas as pd
 import time
 import datetime
+import sys
 
 from config import *
 
@@ -41,7 +42,6 @@ def get_session():
     return tf.Session(config=config)
 
 def label_image(image_path, out_list):
-    out_list = []
     image = read_image_bgr(image_path)
 
     # copy to draw on
@@ -63,6 +63,7 @@ def label_image(image_path, out_list):
     # visualize detections
     for box, score, label in zip(boxes[0], scores[0], labels[0]):
         # scores are sorted so we can break
+	print("label score: {}".format(score))
         if score < 0.5:
             break
 
@@ -73,8 +74,8 @@ def label_image(image_path, out_list):
 
         caption = "{} {:.3f}".format(labels_to_names[label], score)
         draw_caption(draw, b, caption)
+	cv2.imwrite('model_guess.jpg', draw)
 
-        out_list.append(box.tolist().append(image_path))
         box_list = box.tolist()
         box_list.append(image_path)
         out_list.append(box_list)
@@ -94,7 +95,10 @@ keras.backend.tensorflow_backend.set_session(get_session())
 
 # adjust this to point to your downloaded/trained model
 # models can be downloaded here: https://github.com/fizyr/keras-retinanet/releases
-model_path = os.path.join('snapshots', 'resnet50_csv_01.h5')
+epochs=sys.argv[1]
+modelh5='resnet50_csv_{}.h5'.format(epochs)
+print('Training on: ', modelh5)
+model_path = os.path.join('snapshots', modelh5)
 
 # load retinanet model
 # model = models.load_model(model_path, backbone_name='resnet50')
@@ -106,13 +110,23 @@ model = models.load_model(model_path, backbone_name='resnet50', convert=True)
 #print(model.summary())
 
 # load label to names mapping for visualization purposes
-labels_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush', 80: 'object'}
+labels_to_names = {0: 'object', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush', 80: 'object'}
 
+test_images_path=TEST_IMAGE_PATH
+if len(sys.argv) == 3:
+	test_images_path=sys.argv[2]
+else:
+	print("ERROR: More than 3 args")
+
+print("Testing on:")
 out_list = []
-for filename in os.listdir(TEST_IMAGE_PATH):
-    label_image(os.path.join(TEST_IMAGE_PATH, filename), out_list)
+for filename in os.listdir(test_images_path):
+	print(filename)
+	label_image(os.path.join(test_images_path, filename), out_list)
 
+print(out_list)
 df = pd.DataFrame(out_list)
+print(df)
 df.to_csv("labels.csv", header=False, index=False)
 # ## Run detection on example
 
