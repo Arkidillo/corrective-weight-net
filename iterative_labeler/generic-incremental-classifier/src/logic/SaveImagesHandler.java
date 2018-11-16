@@ -19,7 +19,7 @@ public class SaveImagesHandler {
     public static final String NORMAL_CSV_FILENAME = RELATIVE_WORKING_DIR + "./frcnn/labeled_data.csv";
     public static final String CORRECTED_CSV_FILENAME = RELATIVE_WORKING_DIR + "./frcnn/corrected_data.csv";
 
-    public static void saveAllImages(HashMap<String, ArrayList<Label>> allLabels) {
+    public static void saveAllImages(Map<String, ArrayList<Label>> allLabels) {
         // Make sure the folder is cleared
         createFolders();
         //clearFolders();

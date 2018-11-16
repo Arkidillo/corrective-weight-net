@@ -7,11 +7,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 // A panel that draws the image that is set
 public class ImagePane extends JLayeredPane {
 
-    private HashMap<String, ArrayList<Label>> labels = new HashMap<>();
+    private Map<String, ArrayList<Label>> labels = new HashMap<>();
     private BufferedImage image;
     private String currentFileName;
 
@@ -19,7 +20,10 @@ public class ImagePane extends JLayeredPane {
         setPreferredSize(dim);
     }
 
-    public HashMap<String, ArrayList<Label>> getLabels() {
+    public void setLabels(Map<String, ArrayList<Label>> labels) {
+        this.labels = labels;
+    }
+    public Map<String, ArrayList<Label>> getLabels() {
         return labels;
     }
 

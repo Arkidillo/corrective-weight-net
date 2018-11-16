@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class GUIHandler implements ActionListener{
     private OurFrame frame;
@@ -61,6 +63,10 @@ public class GUIHandler implements ActionListener{
         imagePane.repaint();
         imagePane.validate();
         frame.repaint();
+    }
+
+    public void setAllLabels(Map<String, ArrayList<Label>> allLabels) {
+        imagePane.setLabels(allLabels);
     }
 
     public void addLabel(Label label) {
