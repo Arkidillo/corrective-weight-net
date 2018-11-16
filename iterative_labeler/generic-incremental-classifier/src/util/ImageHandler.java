@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ImageHandler {
     public static final String RELATIVE_WORKING_DIR = "./";
-    //public static final String RELATIVE_WORKING_DIR = "../";
+    //public static final String RELATIVE_WORKING_DIR = "../../";
 
     // folder that our images will be stored in
     public static final String IMAGE_FOLDER = RELATIVE_WORKING_DIR + "./iterative_labeler/samples/initial_train_images/";

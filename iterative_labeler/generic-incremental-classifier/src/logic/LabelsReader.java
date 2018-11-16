@@ -31,8 +31,8 @@ public class LabelsReader {
                 newLabel = new Label();
                 int x = (int)Double.parseDouble(record.get(0));
                 int y = (int)Double.parseDouble(record.get(1));
-                int width = (int)Double.parseDouble(record.get(2));
-                int height = (int)Double.parseDouble(record.get(3));
+                int x2 = (int)Double.parseDouble(record.get(2));
+                int y2 = (int)Double.parseDouble(record.get(3));
 
                 filename = record.get(4);
                 // Happens for the first file
@@ -42,8 +42,8 @@ public class LabelsReader {
 
                 newLabel.setTop(y);
                 newLabel.setLeft(x);
-                newLabel.setBottom(y + height);
-                newLabel.setRight(x + width);
+                newLabel.setBottom(y2);
+                newLabel.setRight(x2);
 
                 if (!filename.equals(oldFilename)){
                     labels.put(oldFilename, thisImageLabels);
@@ -63,7 +63,6 @@ public class LabelsReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return labels;
     }
